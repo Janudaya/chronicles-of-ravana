@@ -223,8 +223,9 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
   ];
 
   return (
-    <div className="relative w-full min-h-screen overflow-y-auto bg-obsidian text-slate-100 pt-20 pb-28 px-4 sm:px-6 lg:px-12 scrollbar-thin select-text">
+    <div className="relative w-full min-h-screen overflow-y-auto bg-obsidian text-slate-100 pt-16 sm:pt-20 pb-28 px-4 sm:px-6 lg:px-12 scrollbar-thin select-text">
       {/* Background ambient lighting effects */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[420px] bg-[radial-gradient(ellipse_at_top,rgba(245,158,11,0.18)_0%,rgba(180,83,9,0.06)_50%,transparent_80%)] pointer-events-none" />
       <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-gradient-to-b from-amber-500/15 via-amber-600/5 to-transparent rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute top-96 left-12 w-96 h-96 bg-sky-500/5 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-20 right-12 w-96 h-96 bg-amber-500/10 rounded-full blur-[100px] pointer-events-none" />
@@ -313,7 +314,35 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
 
       <div className="max-w-6xl mx-auto relative z-30 space-y-16 sm:space-y-20">
         {/* HERO INTRO SECTION */}
-        <section className="text-center pt-6 sm:pt-12 max-w-4xl mx-auto space-y-6">
+        <section className="text-center pt-2 sm:pt-4 max-w-4xl mx-auto space-y-6">
+          {/* Royal Apex Centerpiece - Solar Chakra Medallion connecting the two flanks */}
+          <div className="flex flex-col items-center justify-center space-y-2 select-none group/apex animate-in fade-in duration-700">
+            <div className="relative flex items-center justify-center">
+              {/* Radial Solar Golden Halo */}
+              <div className="absolute -inset-3 rounded-full bg-gradient-to-r from-amber-500/30 via-amber-400/40 to-amber-600/30 blur-xl pointer-events-none animate-pulse" />
+              
+              {/* Medallion Disc */}
+              <div className="relative p-2 sm:p-2.5 rounded-full bg-gradient-to-b from-amber-400/25 via-slate-950/95 to-obsidian border border-amber-500/50 shadow-gold-glow backdrop-blur-md transition-transform duration-500 hover:scale-105">
+                <RavanaImperialLogo size={48} className="drop-shadow-[0_0_12px_rgba(245,158,11,0.65)]" />
+              </div>
+            </div>
+
+            {/* Dynastic Seal & Ornamental Filigree Arch */}
+            <div className="flex items-center justify-center gap-3 w-full max-w-sm px-4 pt-0.5">
+              <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-amber-500/30 to-amber-400/60" />
+              <span className="text-[10px] sm:text-[11px] font-serif tracking-[0.25em] uppercase text-amber-300/90 font-bold flex items-center gap-1.5">
+                <span className="w-1 h-1 rounded-full bg-amber-400" />
+                {language === 'si'
+                  ? 'ශ්‍රී ලංකාධීශ්වර • සූර්ය වංශය'
+                  : language === 'hi'
+                  ? 'महा लंकाधिपति • सूर्य वंश'
+                  : 'SUPREME SOVEREIGN • SOLAR DYNASTY'}
+                <span className="w-1 h-1 rounded-full bg-amber-400" />
+              </span>
+              <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent via-amber-500/30 to-amber-400/60" />
+            </div>
+          </div>
+
           {/* Top Tag Badges with Creator Credit */}
           <div className="flex flex-wrap items-center justify-center gap-2.5">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 shadow-gold-glow">
