@@ -58,18 +58,13 @@ Double-click `run-dev.bat` or run in PowerShell:
 ```
 Or with Node.js directly:
 ```powershell
-$env:PATH = "C:\Users\JANUDAYA\.gemini\antigravity\scratch\nodejs;" + $env:PATH
-$env:NEXT_FORCE_SWC_WASM = "1"
-npm run dev
+
 ```
 Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 
 ### Production Build
 ```powershell
-$env:PATH = "C:\Users\JANUDAYA\.gemini\antigravity\scratch\nodejs;" + $env:PATH
-$env:NEXT_FORCE_SWC_WASM = "1"
-npm run build
-```
+
 
 ---
 
