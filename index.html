@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chronicles of Ravana &mdash; Mythic Lore & Modern Earth</title>
+  
+  <!-- Premium Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Cormorant+Garamond:ital,wght@0,500;0,700;1,400;1,600&family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            gold: {
+              300: '#FDE68A',
+              400: '#F59E0B',
+              500: '#D4AF37',
+              600: '#B8860B',
+              700: '#92400E',
+            },
+            obsidian: '#07090E',
+            slatecard: 'rgba(11, 15, 23, 0.78)',
+          },
+          fontFamily: {
+            serif: ['Cinzel', 'Georgia', 'serif'],
+            quote: ['Cormorant Garamond', 'Georgia', 'serif'],
+            sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* Fullscreen reset */
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background-color: #07090E;
+      color: #F1F5F9;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Leaflet Overrides for Dark Atmosphere */
+    .leaflet-container {
+      background: #07090E !important;
+      font-family: inherit;
+    }
+    .leaflet-bar a {
+      background-color: rgba(11, 15, 23, 0.9) !important;
+      color: #D4AF37 !important;
+      border-color: rgba(212, 175, 55, 0.3) !important;
+    }
+    .leaflet-bar a:hover {
+      background-color: #D4AF37 !important;
+      color: #000 !important;
+    }
+
+    /* Radar Marker Pulses */
+    @keyframes goldenPulse {
+      0% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.8); opacity: 0.25; }
+      100% { transform: scale(2.6); opacity: 0; }
+    }
+    .radar-pulse-ring {
+      animation: goldenPulse 2.4s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;
+    }
+
+    /* Custom Glassmorphism Scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(212, 175, 55, 0.25); border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+
+    /* Audio Equalizer Bars */
+    @keyframes eqBar {
+      0%, 100% { height: 4px; }
+      50% { height: 16px; }
+    }
+    .eq-bar-1 { animation: eqBar 1.2s ease-in-out infinite; }
+    .eq-bar-2 { animation: eqBar 0.8s ease-in-out infinite 0.2s; }
+    .eq-bar-3 { animation: eqBar 1.5s ease-in-out infinite 0.4s; }
+    .eq-bar-4 { animation: eqBar 0.9s ease-in-out infinite 0.1s; }
+
+    /* Vignette & Gradients */
+    .vignette-overlay {
+      background: radial-gradient(circle at center, transparent 35%, rgba(7, 9, 14, 0.65) 75%, rgba(7, 9, 14, 0.95) 100%);
+      pointer-events: none;
+    }
+    .gold-glow {
+      box-shadow: 0 0 40px -8px rgba(212, 175, 55, 0.35);
+    }
+  </style>
+</head>
+
+<body class="relative h-screen w-screen overflow-hidden bg-[#07090E] select-none text-slate-100">
+
+  <!-- FULLSCREEN LEAFLET MAP CANVAS -->
+  <div id="map" class="absolute inset-0 z-0 w-full h-full"></div>
+
+  <!-- ATMOSPHERIC VIGNETTE & PARTICLE CANVAS -->
+  <div class="vignette-overlay absolute inset-0 z-[1] pointer-events-none"></div>
+  <canvas id="ambient-canvas" class="absolute inset-0 z-[2] pointer-events-none"></canvas>
+
+  <!-- TOP HUD: LUXURY MINIMALIST NAVIGATION -->
+  <header class="absolute top-4 inset-x-6 z-20 flex items-center justify-between pointer-events-auto">
+    <!-- Brand Mark -->
+    <div class="flex items-center gap-3.5 bg-black/60 backdrop-blur-xl px-4 py-2.5 rounded-2xl border border-amber-500/25 shadow-2xl">
+      <div class="relative w-9 h-9 rounded-xl bg-gradient-to-br from-[#D4AF37] via-amber-600 to-amber-900 p-[1px] flex items-center justify-center shadow-lg shadow-amber-500/20">
+        <div class="w-full h-full bg-[#07090E] rounded-xl flex items-center justify-center">
+          <span class="font-serif font-black text-amber-400 text-lg tracking-tighter">R</span>
+        </div>
+      </div>
+      <div>
+        <h1 class="font-serif text-sm tracking-[0.25em] uppercase font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-yellow-600">
+          Chronicles of Ravana
+        </h1>
+        <p class="text-[10px] font-mono text-slate-400 tracking-wider">
+          CELESTIAL LORE &bull; SRI LANKA GEODATA
+        </p>
+      </div>
+    </div>
+
+    <!-- Center Chapter Pill (Desktop) -->
+    <div class="hidden md:flex items-center gap-3 bg-black/60 backdrop-blur-xl px-5 py-2.5 rounded-2xl border border-white/10 text-xs font-mono">
+      <span class="flex items-center gap-2 text-amber-400 font-semibold">
+        <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+        CHAPTER <span id="hud-chapter-num">02</span> / 17
+      </span>
+      <span class="text-slate-600">&bull;</span>
+      <span id="hud-chapter-title" class="text-slate-200 font-serif tracking-wide truncate max-w-[220px]">
+        Alakamandava
+      </span>
+      <span class="text-slate-600">&bull;</span>
+      <span id="hud-coords" class="text-cyan-400 font-mono text-[11px]">
+        07.9570° N, 80.7603° E
+      </span>
+    </div>
+
+    <!-- Right Quick Controls -->
+    <div class="flex items-center gap-2.5">
+      <!-- Audio Atmosphere Toggle -->
+      <button id="audio-btn" class="flex items-center gap-2 bg-black/60 backdrop-blur-xl px-3.5 py-2 rounded-2xl border border-amber-500/20 text-xs font-mono text-slate-300 hover:border-amber-400 hover:text-white transition shadow-lg">
+        <div id="audio-bars" class="flex items-end gap-[3px] h-4 w-4">
+          <span class="w-[2.5px] bg-amber-400 rounded-full h-1"></span>
+          <span class="w-[2.5px] bg-amber-400 rounded-full h-1"></span>
+          <span class="w-[2.5px] bg-amber-400 rounded-full h-1"></span>
+          <span class="w-[2.5px] bg-amber-400 rounded-full h-1"></span>
+        </div>
+        <span id="audio-label" class="hidden sm:inline">Veena Drone: Off</span>
+      </button>
+
+      <!-- Gallery / All Sites Grid Button -->
+      <button id="gallery-btn" class="flex items-center gap-2 bg-black/60 backdrop-blur-xl px-3.5 py-2 rounded-2xl border border-white/15 text-xs font-mono text-slate-300 hover:border-amber-400 hover:text-amber-300 transition shadow-lg">
+        <i data-lucide="layout-grid" class="w-4 h-4 text-amber-400"></i>
+        <span class="hidden sm:inline">All 17 Sites</span>
+      </button>
+
+      <!-- Center On Sri Lanka -->
+      <button id="reset-map-btn" class="w-9 h-9 flex items-center justify-center bg-black/60 backdrop-blur-xl rounded-2xl border border-white/15 text-slate-300 hover:border-amber-400 hover:text-amber-400 transition shadow-lg" title="Reset View of Sri Lanka">
+        <i data-lucide="crosshair" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- LEFT FLOATING CINEMATIC STORY CARD -->
+  <aside id="story-panel" class="absolute top-20 bottom-24 left-6 z-20 w-[460px] max-w-[calc(100vw-3rem)] bg-slatecard backdrop-blur-2xl rounded-3xl border border-amber-500/30 p-6 flex flex-col justify-between shadow-[0_25px_60px_rgba(0,0,0,0.95)] gold-glow transition-all duration-500">
+    
+    <!-- Top Content Group -->
+    <div class="flex-1 overflow-y-auto pr-1 space-y-4">
+      
+      <!-- Photo Banner with Era & Category Badges -->
+      <div class="relative h-44 w-full rounded-2xl overflow-hidden border border-white/10 group shadow-inner">
+        <img id="panel-image" src="" alt="Landmark" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 brightness-90">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+        
+        <div class="absolute top-3 left-3 flex items-center gap-2">
+          <span id="panel-category-badge" class="px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-amber-400/50 text-[10px] font-mono uppercase tracking-wider text-amber-300">
+            CITADEL
+          </span>
+          <span id="panel-period-badge" class="px-2.5 py-1 rounded-full bg-black/75 backdrop-blur-md border border-white/15 text-[10px] font-serif text-slate-300 italic">
+            Ascendancy Era
+          </span>
+        </div>
+
+        <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-[11px] font-mono text-slate-300">
+          <span id="panel-district-badge" class="flex items-center gap-1.5">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-cyan-400"></i>
+            <span id="panel-district-text">Matale District</span>
+          </span>
+          <span id="panel-elevation-badge" class="text-amber-400 font-semibold">
+            349 m MSL
+          </span>
+        </div>
+      </div>
+
+      <!-- Dual-Perspective Mode Switcher -->
+      <div class="flex rounded-xl bg-black/60 p-1 border border-white/10 text-xs font-mono">
+        <button id="tab-ancient" class="flex-1 py-2 rounded-lg font-bold flex items-center justify-center gap-1.5 transition-all bg-[#D4AF37] text-black shadow-md">
+          <i data-lucide="scroll" class="w-3.5 h-3.5"></i>
+          <span>Ancient Vision</span>
+        </button>
+        <button id="tab-modern" class="flex-1 py-2 rounded-lg font-bold flex items-center justify-center gap-1.5 transition-all text-slate-400 hover:text-white">
+          <i data-lucide="satellite" class="w-3.5 h-3.5"></i>
+          <span>Modern Reality</span>
+        </button>
+      </div>
+
+      <!-- Main Title -->
+      <div>
+        <div class="text-[11px] font-mono uppercase text-amber-400 tracking-widest mb-1 flex items-center gap-2">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+          <span id="panel-ancient-name">Alakamandava / Chitra-kuta</span>
+        </div>
+        <h2 id="panel-title" class="font-serif text-2xl font-bold tracking-tight text-white leading-tight">
+          The Golden Monolith of Alakamandava
+        </h2>
+      </div>
+
+      <!-- Tab Content 1: Ancient Vision -->
+      <div id="ancient-view" class="space-y-3.5 text-sm leading-relaxed text-slate-300 font-normal">
+        <p id="panel-ancient-lore" class="text-slate-300 text-[13px] leading-relaxed">
+          <!-- Text dynamically inserted -->
+        </p>
+
+        <!-- Epic Quote Block -->
+        <blockquote class="relative border-l-2 border-amber-500/80 pl-4 py-2 bg-gradient-to-r from-amber-500/10 to-transparent rounded-r-xl">
+          <p id="panel-quote" class="font-quote text-base italic text-amber-200/95 leading-snug">
+            <!-- Quote inserted -->
+          </p>
+        </blockquote>
+
+        <div class="p-3 rounded-xl bg-black/40 border border-white/5 text-xs text-slate-400">
+          <span class="font-mono text-amber-400 uppercase block mb-1">Ancient Engineering Style:</span>
+          <span id="panel-ancient-style" class="text-slate-300 font-serif">Monolithic granite terraces & mist chambers</span>
+        </div>
+      </div>
+
+      <!-- Tab Content 2: Modern Reality -->
+      <div id="modern-view" class="hidden space-y-3.5 text-sm leading-relaxed text-slate-300">
+        <div class="p-3.5 rounded-xl bg-black/50 border border-white/10 space-y-1">
+          <span class="text-[10px] font-mono uppercase tracking-wider text-cyan-400 block">Current Landmark Status:</span>
+          <p id="panel-modern-status" class="text-slate-200 text-xs leading-relaxed font-sans">
+            <!-- Text dynamically inserted -->
+          </p>
+        </div>
+
+        <div class="p-3.5 rounded-xl bg-black/40 border border-white/5 space-y-1.5">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="text-amber-400 uppercase font-semibold">Travel Reconnaissance:</span>
+            <span id="panel-difficulty-badge" class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[10px] border border-amber-500/40">Moderate Trek</span>
+          </div>
+          <p id="panel-travel-tip" class="text-slate-300 text-xs leading-relaxed">
+            <!-- Text dynamically inserted -->
+          </p>
+        </div>
+
+        <a id="panel-google-maps" href="#" target="_blank" class="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-gradient-to-r from-[#D4AF37] to-amber-600 text-black font-bold text-xs font-mono hover:brightness-110 transition shadow-lg shadow-amber-500/15">
+          <span>Open Google Maps Navigation</span>
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Bottom Controls: Prev / Next / Scrubber Jump -->
+    <div class="pt-4 border-t border-white/10 flex items-center justify-between mt-2">
+      <button id="btn-prev" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-black/50 border border-white/10 text-xs font-mono text-slate-300 hover:text-white hover:border-amber-400 transition">
+        <i data-lucide="chevron-left" class="w-4 h-4"></i>
+        <span>Previous</span>
+      </button>
+
+      <span class="text-[11px] font-mono text-slate-500">
+        Press <kbd class="px-1.5 py-0.5 rounded bg-white/10 text-slate-300">&larr;</kbd> <kbd class="px-1.5 py-0.5 rounded bg-white/10 text-slate-300">&rarr;</kbd> keys
+      </span>
+
+      <button id="btn-next" class="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-500/20 border border-amber-500/50 text-xs font-mono text-amber-300 hover:bg-amber-500 hover:text-black transition">
+        <span>Next</span>
+        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </aside>
+
+  <!-- BOTTOM HORIZONTAL TIMELINE SCRUBBER -->
+  <nav class="absolute bottom-4 inset-x-6 z-20 flex flex-col gap-2 pointer-events-auto">
+    <div class="w-full bg-black/70 backdrop-blur-2xl rounded-2xl border border-amber-500/25 p-3 flex items-center gap-3 shadow-2xl overflow-x-auto scrollbar-none">
+      
+      <span class="text-[10px] font-mono uppercase tracking-widest text-amber-400 whitespace-nowrap pl-2 font-bold">
+        CHRONOLOGY:
+      </span>
+
+      <!-- 17 Timeline Milestone Pills -->
+      <div id="timeline-node-container" class="flex items-center gap-2 flex-1">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </nav>
+
+  <!-- FULLSCREEN MUSEUM GALLERY DRAWER (ALL 17 SITES MODAL) -->
+  <div id="gallery-modal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-2xl p-6 sm:p-10 overflow-y-auto">
+    <div class="max-w-6xl mx-auto space-y-6">
+      
+      <!-- Gallery Header -->
+      <div class="flex items-center justify-between pb-4 border-b border-white/15">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-amber-400">Complete Historical Archive</span>
+          <h2 class="font-serif text-3xl font-bold text-white">The 17 Footprints of King Ravana</h2>
+        </div>
+        <button id="close-gallery-btn" class="w-10 h-10 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-slate-300 hover:text-white hover:bg-white/20 transition">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Category Filter Pills inside Gallery -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-2 text-xs font-mono">
+        <button data-cat="all" class="gal-cat-btn px-4 py-1.5 rounded-full border border-amber-400 bg-amber-400 text-black font-bold">All (17)</button>
+        <button data-cat="palace" class="gal-cat-btn px-4 py-1.5 rounded-full border border-white/15 bg-black/40 text-slate-300 hover:text-white">🏰 Citadels (5)</button>
+        <button data-cat="aviation" class="gal-cat-btn px-4 py-1.5 rounded-full border border-white/15 bg-black/40 text-slate-300 hover:text-white">🦅 Aviation (4)</button>
+        <button data-cat="water" class="gal-cat-btn px-4 py-1.5 rounded-full border border-white/15 bg-black/40 text-slate-300 hover:text-white">💧 Subterranean (2)</button>
+        <button data-cat="cave" class="gal-cat-btn px-4 py-1.5 rounded-full border border-white/15 bg-black/40 text-slate-300 hover:text-white">🕳️ Caverns (2)</button>
+        <button data-cat="healing" class="gal-cat-btn px-4 py-1.5 rounded-full border border-white/15 bg-black/40 text-slate-300 hover:text-white">🌿 Healing (4)</button>
+      </div>
+
+      <!-- Cards Grid -->
+      <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION DATA & LOGIC -->
+  <script>
+    const ravanaSites = [
+      {
+        id: "gokarna",
+        order: 1,
+        title: "Birth, Lineage & The Severe Tapasya",
+        ancientName: "Gokarna-kshetra / Atma-linga Tapovana",
+        modernSiteName: "Gokarna Coastal Shrine",
+        district: "Uttara Kannada, India",
+        coordinates: [14.5433, 74.3175],
+        category: "healing",
+        period: "The Ascendancy",
+        image: "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "Born to Sage Vishrava of Pulastya lineage and Daitya Princess Kaikesi, Ravana achieved cosmic invincibility by sacrificing his ten heads into the sacred flame before Lord Brahma and Shiva.",
+        ancientStyle: "Vedic sacrificial stone altars & coastal basalt caves",
+        modernStatus: "Active coastal Shiva pilgrimage town housing the legendary Atmalinga temple at Mahabaleshwar.",
+        elevation: "12 m MSL",
+        difficulty: "Easy Walk",
+        travelTip: "Coastal train or taxi from Goa (140 km); celebrated for Om Beach and ancient sea temples.",
+        quote: '"Ten minds of supreme intellect offered willingly to the cosmic flame."'
+      },
+      {
+        id: "sigiriya",
+        order: 2,
+        title: "The Golden Monolith of Alakamandava",
+        ancientName: "Alakamandava / Chitra-kuta",
+        modernSiteName: "Sigiriya Rock Fortress",
+        district: "Matale District",
+        coordinates: [7.9570, 80.7603],
+        category: "palace",
+        period: "The Ascendancy",
+        image: "https://images.unsplash.com/photo-1586861635167-e5223aadc9fe?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "Acquired from Kubera as the sky-high palace of Lanka with gravity-defying hydraulic mist fountains and mirror plaster, commanding the northern plains of the island.",
+        ancientStyle: "Monolithic porphyry redoubt, terraced cisterns, mirror walls",
+        modernStatus: "UNESCO World Heritage site with surviving 5th-century palace ruins built upon prehistoric megalithic terraces.",
+        elevation: "349 m MSL",
+        difficulty: "Moderate Trek",
+        travelTip: "Climb early between 06:30 AM and 09:00 AM; 1,200 steep rock-carved steps to the sky terrace.",
+        quote: '"Rising into the azure sky like a golden thundercloud, the fortress commanded winds and rains."'
+      },
+      {
+        id: "koneswaram",
+        order: 3,
+        title: "Sundering the Cliff & The Shiva Tandava",
+        ancientName: "Dakshina Kailasa / Ravana Vettu",
+        modernSiteName: "Swami Rock, Koneswaram Temple",
+        district: "Trincomalee District",
+        coordinates: [8.5886, 81.2443],
+        category: "palace",
+        period: "The Ascendancy",
+        image: "https://images.unsplash.com/photo-1596405835955-467dbb11bc64?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "Ravana cleft the 350-foot sea cliff with his Chandrahas sword to lift the temple for his mother. Remorseful, he strung his arm veins on his veena to sing the Shiva Tandava Stotram.",
+        ancientStyle: "Vertical sea-cliff sanctum with monolithic trident reliefs",
+        modernStatus: "Revered Pancha Ishwaram coastal temple inside the colonial ramparts of Fort Frederick.",
+        elevation: "105 m MSL",
+        difficulty: "Easy Walk",
+        travelTip: "Accessible through Fort Frederick; incredible ocean panoramic view for whale & dolphin watching.",
+        quote: '"From the cleft above the crashing surf arose the music of the Ravana Hatha."'
+      },
+      {
+        id: "kanniya",
+        order: 4,
+        title: "The Seven Springs of Matriarchal Rites",
+        ancientName: "Kanniya Sapta-Kunda",
+        modernSiteName: "Kanniya Hot Springs",
+        district: "Trincomalee District",
+        coordinates: [8.6019, 81.1895],
+        category: "water",
+        period: "Sacred Rites",
+        image: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "To conduct funeral obsequies for his mother Kaikesi, Ravana pierced the earth seven times with his blade, unleashing seven hot springs of differing temperatures.",
+        ancientStyle: "Square geomantic brick wells fed by thermal veins",
+        modernStatus: "Protected archaeological monument with seven square terracotta-bricked hot water wells (38°C–42°C).",
+        elevation: "18 m MSL",
+        difficulty: "Easy Walk",
+        travelTip: "Located 8 km west of Trincomalee on the A12; dawn is best for bathing and tranquil contemplation.",
+        quote: '"Seven thermal veins burst forth to cleanse the departed soul of the queen mother."'
+      },
+      {
+        id: "gurulupotha",
+        order: 5,
+        title: "The Royal Aircraft Maintenance Hangar",
+        ancientName: "Gurulupotha (Glider Shelter)",
+        modernSiteName: "Gurulupotha Ruins, Hasalaka",
+        district: "Kandy / Badulla Border",
+        coordinates: [7.3481, 80.9983],
+        category: "aviation",
+        period: "Aviation & Engineering",
+        image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "An advanced aeronautical facility where the Dandu Monara (mechanical bird/glider) was serviced using mercury-vortex turbines and acoustic resonant controls.",
+        ancientStyle: "Subterranean cavern workshop with stone slips & kilns",
+        modernStatus: "Archaeological forest reserve near the Mahaweli River with unexcavated megalithic stone mounds.",
+        elevation: "215 m MSL",
+        difficulty: "Moderate Trek",
+        travelTip: "Near the famous 18 Hairpin Bends on the Kandy-Mahiyangana road; local village guide helpful.",
+        quote: '"Where the wings of bronze and treated wood rested under cavern roofs."'
+      },
+      {
+        id: "weragantota",
+        order: 6,
+        title: "The River Basin Aerial Terminal",
+        ancientName: "Weragantota (Port of Flying Craft)",
+        modernSiteName: "Weragantota, Mahiyanganaya",
+        district: "Badulla District",
+        coordinates: [7.3276, 81.0022],
+        category: "aviation",
+        period: "Aviation & Engineering",
+        image: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "The primary lowland riverbank harbor where the Pushpaka Vimana landed when Princess Sita was brought into the island of Lanka.",
+        ancientStyle: "Alluvial stone landing quays with stone mooring pillars",
+        modernStatus: "Mahaweli river crossing precinct adjacent to the sacred Mahiyangana Raja Maha Vihara stupa.",
+        elevation: "88 m MSL",
+        difficulty: "Easy Walk",
+        travelTip: "Next to Mahiyangana Stupa, one of Sri Lanka's 16 sacred Buddhist pilgrimage destinations.",
+        quote: '"The golden ship touched down upon the river plains, greeted by royal standard bearers."'
+      },
+      {
+        id: "thotupola",
+        order: 7,
+        title: "The Cloud-Piercing High Runway",
+        ancientName: "Thotupola Pabbatha (Port Mountain)",
+        modernSiteName: "Thotupola Kanda, Horton Plains",
+        district: "Nuwara Eliya District",
+        coordinates: [6.8294, 80.8228],
+        category: "aviation",
+        period: "Aviation & Engineering",
+        image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "A leveled high-altitude mountain plateau at over 2,300 meters where Vimanas launched directly into mountain updrafts to fly above cloud banks.",
+        ancientStyle: "Leveled montane stone ridge with cardinal celestial markers",
+        modernStatus: "Third-highest mountain peak in Sri Lanka, accessible via nature trails in Horton Plains National Park.",
+        elevation: "2,357 m MSL",
+        difficulty: "Moderate Trek",
+        travelTip: "Requires Horton Plains National Park permit; 2-hour rewarding hike amidst dwarf cloud-forest.",
+        quote: '"A mountain shaved flat by ancient hands so the ships of heaven could land above storm clouds."'
+      },
+      {
+        id: "wariyapola",
+        order: 8,
+        title: "The Western Aerial Port",
+        ancientName: "Wari-ya-pola (Harbor of Aerial Craft)",
+        modernSiteName: "Wariyapola Town, Kurunegala",
+        district: "Kurunegala District",
+        coordinates: [7.6163, 80.2307],
+        category: "aviation",
+        period: "Aviation & Engineering",
+        image: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "An auxiliary regional aerial landing hub connecting northern maritime trade routes with the central hill fortress network.",
+        ancientStyle: "Circular stone flight towers with beacon lanterns",
+        modernStatus: "Bustling town whose very linguistic name preserves its ancient aeronautical purpose ('Wari-ya-pola').",
+        elevation: "78 m MSL",
+        difficulty: "Easy Walk",
+        travelTip: "Located on the Kurunegala-Puttalam highway; easily reached by public or private transit.",
+        quote: '"The beacon lights guided celestial navigators from the northern seas."'
+      },
+      {
+        id: "nildiya",
+        order: 9,
+        title: "The Emerald Subterranean Lake",
+        ancientName: "Patala Guha Antargata Jalashaya",
+        modernSiteName: "Nil Diya Pokuna Cavern, Ella",
+        district: "Badulla District",
+        coordinates: [6.8778, 81.0772],
+        category: "water",
+        period: "Subterranean Defense",
+        image: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "An underground lake located 90 meters below ground with luminous cyan waters, serving as an emergency royal reservoir and tunnel hub.",
+        ancientStyle: "Natural limestone rift cavern with megalithic steps",
+        modernStatus: "Deep underground cavern explored by adventurous spelunkers in Karandagolla village.",
+        elevation: "890 m Underground",
+        difficulty: "Expedition Grade",
+        travelTip: "Challenging spelunking descent; certified local guide with proper headlamps mandatory.",
+        quote: '"Cold, crystal-blue waters where no sun has shone for five thousand years."'
+      },
+      {
+        id: "ravanaella",
+        order: 10,
+        title: "The Water-Curtain Fortress of Ella",
+        ancientName: "Ravana Guha Vana-Durga",
+        modernSiteName: "Ravana Falls & Upper Ravana Cave",
+        district: "Badulla District",
+        coordinates: [6.8661, 81.0538],
+        category: "cave",
+        period: "Subterranean Defense",
+        image: "https://images.unsplash.com/photo-1546708973-b339540b5162?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "A 25-meter tiered cascade whose roaring water curtain hid cavern niches where Princess Sita was shielded during Vanara searches.",
+        ancientStyle: "Rock cavern concealed by crashing natural waterfalls",
+        modernStatus: "Iconic scenic waterfall and prehistoric cave with verified Balangoda Culture archaeological finds.",
+        elevation: "1,050 m MSL",
+        difficulty: "Moderate Trek",
+        travelTip: "Waterfall is directly beside the road; hiking to the upper cave requires climbing 650 stone steps.",
+        quote: '"Behind the thundering veil of white foam lay corridors cut into the mountain."'
+      },
+      {
+        id: "hakgala",
+        order: 11,
+        title: "The Pleasure Grove of Ashok Vatika",
+        ancientName: "Ashoka Vatika / Pramada Vana",
+        modernSiteName: "Hakgala Botanical Gardens & Reserve",
+        district: "Nuwara Eliya District",
+        coordinates: [6.9272, 80.8208],
+        category: "palace",
+        period: "Forest Sanctuaries",
+        image: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "A temperate high-mountain botanical sanctuary where Sita rested under weeping Ashoka trees and where Hanuman delivered Rama's signet ring.",
+        ancientStyle: "Terraced botanical arboretum with cold mountain springs",
+        modernStatus: "One of the highest-elevation botanical gardens in South Asia, nestled beneath the sheer cliff of Hakgala.",
+        elevation: "1,745 m MSL",
+        difficulty: "Easy Walk",
+        travelTip: "Open daily 08:00 AM – 05:00 PM; cool mountain climate with magnificent orchids and ferns.",
+        quote: '"Scarlet blossoms draped like rubies over the secluded garden of patience."'
+      },
+      {
+        id: "ritigala",
+        order: 12,
+        title: "The Fallen Sanjeevani of the North",
+        ancientName: "Aritha Pabbatha (Medicinal Mountain)",
+        modernSiteName: "Ritigala Strict Nature Reserve",
+        district: "Anuradhapura District",
+        coordinates: [8.1189, 80.6583],
+        category: "healing",
+        period: "The Cosmic War",
+        image: "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "When Hanuman flew south carrying the Himalayan herbal peak to revive Lakshmana, a piece fell upon the northern plains, generating an isolated microclimate of Himalayan medicinal herbs.",
+        ancientStyle: "Cyclopean stone pathways and sunken meditative ponds",
+        modernStatus: "Protected strict nature reserve and monastery ruins with unique micro-climatic flora.",
+        elevation: "766 m MSL",
+        difficulty: "Moderate Trek",
+        travelTip: "Nature reserve permit required; serene shaded walking paths through ancient stone structures.",
+        quote: '"A fragment of Himalayan snow and herbs flourishing in the dry northern plains."'
+      },
+      {
+        id: "rumassala",
+        order: 13,
+        title: "The Fallen Sanjeevani of the South",
+        ancientName: "Oshadhiparvata / Sanjeevani Khanda",
+        modernSiteName: "Rumassala Sanctuary (Buona Vista)",
+        district: "Galle District",
+        coordinates: [6.0125, 80.2458],
+        category: "healing",
+        period: "The Cosmic War",
+        image: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "Another fragment dropped into the southern surf, creating a headland where traditional Ayurvedic physicians still harvest rare medicinal plants.",
+        ancientStyle: "Sacred maritime headland with ocean caves and herbs",
+        modernStatus: "Forested coastal sanctuary with the Japanese Peace Pagoda and Hanuman statue overlooking Galle Harbour.",
+        elevation: "62 m MSL",
+        difficulty: "Easy Walk",
+        travelTip: "Just past Unawatuna; visit near sunset for views over Galle Fort and Jungle Beach.",
+        quote: '"A piece of the golden mountain plunged into the southern surf, healing the island."'
+      },
+      {
+        id: "lakegala",
+        order: 14,
+        title: "The Strategic Pyramidal Radar Watchtower",
+        ancientName: "Lankagala / Ilakkagala (Target Rock)",
+        modernSiteName: "Lakegala Peak, Meemure",
+        district: "Matale District",
+        coordinates: [7.5028, 80.8528],
+        category: "cave",
+        period: "The Cosmic War",
+        image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "A sheer triangular granite pyramid commanding 360-degree views where Ravana directed his armies and watched for approaching oceanic fleets.",
+        ancientStyle: "Natural triangular stone pyramid with signal braziers",
+        modernStatus: "Iconic mountain monolith in the isolated village of Meemure within the Knuckles Forest Reserve.",
+        elevation: "1,310 m MSL",
+        difficulty: "Expedition Grade",
+        travelTip: "Extremely challenging trek requiring 4WD to Meemure and rock-scrambling gear.",
+        quote: '"A razor-sharp stone pyramid piercing the sky, watching every horizon of the island."'
+      },
+      {
+        id: "yahangala",
+        order: 15,
+        title: "The Stone Bed of the Sleeping Monarch",
+        ancientName: "Yahan-Pabbatha (Rock of the Bed)",
+        modernSiteName: "Yahangala Rock, Knuckles Range",
+        district: "Kandy District",
+        coordinates: [7.4278, 80.8806],
+        category: "palace",
+        period: "The Final Slumber",
+        image: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "After receiving the Brahmastra strike, Ravana was laid in state upon this colossal flat stone slab, entering a suspended death-like stasis guarded by Nagas.",
+        ancientStyle: "Gigantic table-top rock slab shrouded in mountain mists",
+        modernStatus: "Expedition trekking destination where local folklore forbids shouting out of respect for the sleeping king.",
+        elevation: "1,920 m MSL",
+        difficulty: "Expedition Grade",
+        travelTip: "Trek begins from Kalugala / Uda Dumbara; wind-buffeted plateau with sudden fog.",
+        quote: '"Upon the altar of the mountain, the king sleeps until the cycle of the earth turns anew."'
+      },
+      {
+        id: "divurumpola",
+        order: 16,
+        title: "The Sacred Oath of Fire",
+        ancientName: "Divurum-Pola (Place of the Oath)",
+        modernSiteName: "Divurumpola Raja Maha Viharaya",
+        district: "Badulla District",
+        coordinates: [6.9442, 80.9419],
+        category: "healing",
+        period: "The Final Slumber",
+        image: "https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "Where Princess Sita undertook the Agni Pariksha (Trial by Fire) to manifest her unblemished purity before returning to Ayodhya.",
+        ancientStyle: "Sacred Bo-tree court and ceremonial fire circle",
+        modernStatus: "Active Buddhist temple where legal oaths have historically been sworn by local courts under the sacred Bo-tree.",
+        elevation: "920 m MSL",
+        difficulty: "Easy Walk",
+        travelTip: "Located near Welimada on the Nuwara Eliya highway; peaceful temple courtyard.",
+        quote: '"Fire itself bowed to truth, bearing the pure queen unburned from the flames."'
+      },
+      {
+        id: "greatbasses",
+        order: 17,
+        title: "The Sunken Citadel of Ravana Kotte",
+        ancientName: "Maha Ravana Kotte / Ravana Rajadhaniya",
+        modernSiteName: "Great Basses Reef, Kirinda Coast",
+        district: "Hambantota District",
+        coordinates: [6.1814, 81.4828],
+        category: "palace",
+        period: "The Sunken Empire",
+        image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=80",
+        ancientLore: "Ancient chronicles record that vast coastal palaces and mints of ancient Lanka were submerged beneath the Indian Ocean following catastrophic post-war seismic cataclysms.",
+        ancientStyle: "Submerged cyclopean seawalls, stone quays, and coral gates",
+        modernStatus: "Offshore sandstone reef barrier topped by an 1873 lighthouse, famous for shipwreck scuba diving (explored by Arthur C. Clarke).",
+        elevation: "-12 m Submerged",
+        difficulty: "Restricted / Dive",
+        travelTip: "Requires authorized boat charter from Kirinda; scuba diving only possible in calm seas (February–April).",
+        quote: '"Beneath the turquoise waves sleep the golden towers of a drowned civilization."'
+      }
+    ];
+
+    // State
+    let currentIndex = 1; // 0-based index: default to Sigiriya (index 1)
+    let map = null;
+    let markers = {};
+    let isAncientMode = true;
+    let audioCtx = null, droneGain = null, osc1 = null, osc2 = null, isAudioActive = false;
+
+    // Initialize Map with CartoDB Dark Matter
+    function initMap() {
+      map = L.map('map', {
+        zoomControl: false,
+        attributionControl: false,
+      }).setView(ravanaSites[currentIndex].coordinates, 13);
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        maxZoom: 19,
+        subdomains: 'abcd',
+      }).addTo(map);
+
+      // Add zoom control in bottom-right corner
+      L.control.zoom({ position: 'bottomright' }).addTo(map);
+
+      // Render custom pins
+      ravanaSites.forEach((site, idx) => {
+        const marker = L.marker(site.coordinates, {
+          icon: createMarkerIcon(idx === currentIndex, site.order)
+        }).addTo(map);
+
+        marker.on('click', () => {
+          selectMilestone(idx);
+        });
+
+        markers[site.id] = marker;
+      });
+    }
+
+    function createMarkerIcon(isActive, order) {
+      const size = isActive ? 42 : 30;
+      const color = isActive ? '#D4AF37' : '#00E5FF';
+
+      const html = `
+        <div style="position: relative; width: ${size}px; height: ${size}px; display: flex; align-items: center; justify-content: center;">
+          ${isActive ? `<div class="radar-pulse-ring" style="position: absolute; inset: -8px; border-radius: 9999px; background: ${color};"></div>` : ''}
+          <div style="width: 100%; height: 100%; border-radius: 9999px; background: #07090E; border: 2px solid ${color}; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: ${isActive ? '13px' : '11px'}; font-weight: bold; color: ${color}; box-shadow: 0 0 20px ${color}80; transition: transform 0.3s ease;">
+            ${order}
+          </div>
+        </div>
+      `;
+
+      return L.divIcon({
+        html,
+        className: 'custom-pin',
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size / 2],
+      });
+    }
+
+    // Select milestone & update all UI components
+    function selectMilestone(idx) {
+      currentIndex = idx;
+      const site = ravanaSites[currentIndex];
+
+      // 1. Fly Map
+      map.flyTo(site.coordinates, 13, {
+        duration: 1.6,
+        easeLinearity: 0.25
+      });
+
+      // 2. Update Marker Pins
+      ravanaSites.forEach((s, i) => {
+        markers[s.id].setIcon(createMarkerIcon(i === currentIndex, s.order));
+      });
+
+      // 3. Update HUD Bar
+      document.getElementById('hud-chapter-num').innerText = String(site.order).padStart(2, '0');
+      document.getElementById('hud-chapter-title').innerText = site.modernSiteName;
+      document.getElementById('hud-coords').innerText = `${site.coordinates[0].toFixed(4)}° N, ${site.coordinates[1].toFixed(4)}° E`;
+
+      // 4. Update Story Panel
+      document.getElementById('panel-image').src = site.image;
+      document.getElementById('panel-category-badge').innerText = site.category.toUpperCase();
+      document.getElementById('panel-period-badge').innerText = site.period;
+      document.getElementById('panel-district-text').innerText = site.district;
+      document.getElementById('panel-elevation-badge').innerText = site.elevation;
+      document.getElementById('panel-ancient-name').innerText = site.ancientName;
+      document.getElementById('panel-title').innerText = site.title;
+      document.getElementById('panel-ancient-lore').innerText = site.ancientLore;
+      document.getElementById('panel-quote').innerText = site.quote;
+      document.getElementById('panel-ancient-style').innerText = site.ancientStyle;
+      document.getElementById('panel-modern-status').innerText = site.modernStatus;
+      document.getElementById('panel-difficulty-badge').innerText = site.difficulty;
+      document.getElementById('panel-travel-tip').innerText = site.travelTip;
+      document.getElementById('panel-google-maps').href = `https://maps.google.com/?q=${site.coordinates[0]},${site.coordinates[1]}`;
+
+      // 5. Update Bottom Timeline Active State
+      document.querySelectorAll('.timeline-node').forEach((el, i) => {
+        if (i === currentIndex) {
+          el.className = 'timeline-node px-3 py-1.5 rounded-xl bg-amber-400 text-black font-bold text-xs font-mono shadow-lg shadow-amber-400/20 whitespace-nowrap scale-105 transition-all';
+        } else {
+          el.className = 'timeline-node px-3 py-1.5 rounded-xl bg-black/40 text-slate-400 hover:text-white border border-white/10 text-xs font-mono whitespace-nowrap transition-all';
+        }
+      });
+
+      // Scroll timeline node into view
+      const activeNode = document.querySelector(`.timeline-node[data-index="${currentIndex}"]`);
+      if (activeNode) {
+        activeNode.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+
+      lucide.createIcons();
+    }
+
+    // Render Bottom Horizontal Timeline
+    function renderTimelineNodes() {
+      const container = document.getElementById('timeline-node-container');
+      container.innerHTML = '';
+
+      ravanaSites.forEach((site, i) => {
+        const btn = document.createElement('button');
+        btn.dataset.index = i;
+        btn.className = `timeline-node px-3 py-1.5 rounded-xl text-xs font-mono whitespace-nowrap transition-all ${
+          i === currentIndex
+            ? 'bg-amber-400 text-black font-bold shadow-lg shadow-amber-400/20 scale-105'
+            : 'bg-black/40 text-slate-400 hover:text-white border border-white/10'
+        }`;
+        btn.innerHTML = `<span class="opacity-60 mr-1">${String(site.order).padStart(2, '0')}.</span> ${site.modernSiteName.split(',')[0].split('/')[0]}`;
+
+        btn.addEventListener('click', () => selectMilestone(i));
+        container.appendChild(btn);
+      });
+    }
+
+    // Render Gallery Grid Modal
+    function renderGalleryGrid(filter = 'all') {
+      const grid = document.getElementById('gallery-grid');
+      grid.innerHTML = '';
+
+      const filtered = ravanaSites.filter(s => filter === 'all' || s.category === filter);
+
+      filtered.forEach((site) => {
+        const originalIndex = ravanaSites.findIndex(item => item.id === site.id);
+        const card = document.createElement('div');
+        card.className = 'group relative rounded-2xl overflow-hidden border border-white/10 bg-black/60 hover:border-amber-400 transition-all duration-300 cursor-pointer flex flex-col justify-between';
+        card.innerHTML = `
+          <div class="relative h-40 w-full overflow-hidden">
+            <img src="${site.image}" alt="${site.modernSiteName}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 brightness-80">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+            <span class="absolute top-3 left-3 px-2 py-0.5 rounded bg-black/80 text-[10px] font-mono text-amber-300 border border-amber-400/40 uppercase">
+              #${site.order} &bull; ${site.category}
+            </span>
+            <span class="absolute bottom-2 left-3 text-[11px] font-mono text-cyan-400">
+              ${site.district}
+            </span>
+          </div>
+          <div class="p-4 space-y-1.5">
+            <h3 class="font-serif text-lg font-bold text-white group-hover:text-amber-300 transition-colors">
+              ${site.modernSiteName}
+            </h3>
+            <p class="text-xs font-serif italic text-amber-400">
+              ${site.ancientName}
+            </p>
+            <p class="text-xs text-slate-300 line-clamp-2 pt-1 font-sans">
+              ${site.ancientLore}
+            </p>
+          </div>
+        `;
+
+        card.addEventListener('click', () => {
+          document.getElementById('gallery-modal').classList.add('hidden');
+          selectMilestone(originalIndex);
+        });
+
+        grid.appendChild(card);
+      });
+    }
+
+    // Audio Engine: Procedural Harmonic Drone (Web Audio API)
+    function toggleAudioEngine() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+
+      if (!isAudioActive) {
+        audioCtx.resume();
+
+        // Dual oscillators for meditative acoustic drone
+        osc1 = audioCtx.createOscillator();
+        osc2 = audioCtx.createOscillator();
+        droneGain = audioCtx.createGain();
+
+        // 110Hz (A2) + 164.81Hz (E3 - Perfect Fifth harmonic)
+        osc1.type = 'sawtooth';
+        osc1.frequency.setValueAtTime(110, audioCtx.currentTime);
+
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(164.81, audioCtx.currentTime);
+
+        // Gentle ambient volume filter
+        droneGain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+
+        osc1.connect(droneGain);
+        osc2.connect(droneGain);
+        droneGain.connect(audioCtx.destination);
+
+        osc1.start();
+        osc2.start();
+
+        isAudioActive = true;
+        document.getElementById('audio-label').innerText = 'Veena Drone: Active';
+        document.getElementById('audio-bars').children[0].className = 'w-[2.5px] bg-amber-400 rounded-full eq-bar-1';
+        document.getElementById('audio-bars').children[1].className = 'w-[2.5px] bg-amber-400 rounded-full eq-bar-2';
+        document.getElementById('audio-bars').children[2].className = 'w-[2.5px] bg-amber-400 rounded-full eq-bar-3';
+        document.getElementById('audio-bars').children[3].className = 'w-[2.5px] bg-amber-400 rounded-full eq-bar-4';
+        document.getElementById('audio-btn').classList.add('border-amber-400', 'text-amber-300');
+      } else {
+        if (osc1) { osc1.stop(); osc1.disconnect(); }
+        if (osc2) { osc2.stop(); osc2.disconnect(); }
+        isAudioActive = false;
+        document.getElementById('audio-label').innerText = 'Veena Drone: Off';
+        Array.from(document.getElementById('audio-bars').children).forEach(b => b.className = 'w-[2.5px] bg-amber-400 rounded-full h-1');
+        document.getElementById('audio-btn').classList.remove('border-amber-400', 'text-amber-300');
+      }
+    }
+
+    // Ambient Golden Particle / Embers Canvas Animation
+    function initAmbientCanvas() {
+      const canvas = document.getElementById('ambient-canvas');
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+
+      const particles = Array.from({ length: 45 }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 1.5 + 0.5,
+        speedY: -(Math.random() * 0.4 + 0.1),
+        speedX: (Math.random() - 0.5) * 0.2,
+        opacity: Math.random() * 0.5 + 0.2
+      }));
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+          p.y += p.speedY;
+          p.x += p.speedX;
+
+          if (p.y < 0) p.y = height;
+          if (p.x < 0) p.x = width;
+          if (p.x > width) p.x = 0;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(212, 175, 55, ${p.opacity})`;
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = '#D4AF37';
+          ctx.fill();
+        });
+        requestAnimationFrame(animate);
+      }
+      animate();
+    }
+
+    // App Initialization
+    window.addEventListener('DOMContentLoaded', () => {
+      initMap();
+      initAmbientCanvas();
+      renderTimelineNodes();
+      selectMilestone(currentIndex); // Sigiriya as default
+
+      // Tab Switcher inside Story Panel
+      const tabAncient = document.getElementById('tab-ancient');
+      const tabModern = document.getElementById('tab-modern');
+      const ancientView = document.getElementById('ancient-view');
+      const modernView = document.getElementById('modern-view');
+
+      tabAncient.addEventListener('click', () => {
+        isAncientMode = true;
+        tabAncient.className = 'flex-1 py-2 rounded-lg font-bold flex items-center justify-center gap-1.5 transition-all bg-[#D4AF37] text-black shadow-md';
+        tabModern.className = 'flex-1 py-2 rounded-lg font-bold flex items-center justify-center gap-1.5 transition-all text-slate-400 hover:text-white';
+        ancientView.classList.remove('hidden');
+        modernView.classList.add('hidden');
+      });
+
+      tabModern.addEventListener('click', () => {
+        isAncientMode = false;
+        tabModern.className = 'flex-1 py-2 rounded-lg font-bold flex items-center justify-center gap-1.5 transition-all bg-cyan-400 text-black shadow-md';
+        tabAncient.className = 'flex-1 py-2 rounded-lg font-bold flex items-center justify-center gap-1.5 transition-all text-slate-400 hover:text-white';
+        modernView.classList.remove('hidden');
+        ancientView.classList.add('hidden');
+      });
+
+      // Navigation Buttons
+      document.getElementById('btn-prev').addEventListener('click', () => {
+        const nextIdx = (currentIndex - 1 + ravanaSites.length) % ravanaSites.length;
+        selectMilestone(nextIdx);
+      });
+
+      document.getElementById('btn-next').addEventListener('click', () => {
+        const nextIdx = (currentIndex + 1) % ravanaSites.length;
+        selectMilestone(nextIdx);
+      });
+
+      // Keyboard arrow shortcuts
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowLeft') {
+          const nextIdx = (currentIndex - 1 + ravanaSites.length) % ravanaSites.length;
+          selectMilestone(nextIdx);
+        } else if (e.key === 'ArrowRight') {
+          const nextIdx = (currentIndex + 1) % ravanaSites.length;
+          selectMilestone(nextIdx);
+        }
+      });
+
+      // Reset Map View
+      document.getElementById('reset-map-btn').addEventListener('click', () => {
+        map.flyTo([7.8731, 80.7718], 8, { duration: 1.5 });
+      });
+
+      // Audio Toggle
+      document.getElementById('audio-btn').addEventListener('click', toggleAudioEngine);
+
+      // Gallery Modal Handlers
+      const galleryModal = document.getElementById('gallery-modal');
+      document.getElementById('gallery-btn').addEventListener('click', () => {
+        renderGalleryGrid('all');
+        galleryModal.classList.remove('hidden');
+        lucide.createIcons();
+      });
+
+      document.getElementById('close-gallery-btn').addEventListener('click', () => {
+        galleryModal.classList.add('hidden');
+      });
+
+      // Category filters inside Gallery
+      document.querySelectorAll('.gal-cat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.gal-cat-btn').forEach(b => {
+            b.className = 'gal-cat-btn px-4 py-1.5 rounded-full border border-white/15 bg-black/40 text-slate-300 hover:text-white';
+          });
+          btn.className = 'gal-cat-btn px-4 py-1.5 rounded-full border border-amber-400 bg-amber-400 text-black font-bold';
+          renderGalleryGrid(btn.dataset.cat);
+        });
+      });
+
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>
