@@ -76,7 +76,7 @@ export const StoryPanel: React.FC<StoryPanelProps> = ({
   return (
     <div
       ref={scrollContainerRef}
-      className="h-full overflow-y-auto px-4 lg:px-6 pt-24 pb-20 space-y-5 scrollbar-thin select-text"
+      className="h-full overflow-y-auto px-3 sm:px-4 lg:px-6 pt-3 sm:pt-4 lg:pt-6 pb-24 lg:pb-16 space-y-4 sm:space-y-5 scrollbar-thin select-text"
     >
       {/* Intro Hero Header */}
       <div className="relative rounded-2xl p-5 overflow-hidden border border-amber-500/20 bg-gradient-to-br from-slate-900/90 via-slate-900/80 to-amber-950/20 backdrop-blur-md shadow-lg">

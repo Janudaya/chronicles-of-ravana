@@ -57,20 +57,21 @@ export const Navbar: React.FC<NavbarProps> = ({
             onSwitchView('overview');
             onResetView();
           }}
-          className="flex items-center gap-2.5 sm:gap-3 cursor-pointer group select-none flex-shrink-0"
+          className="flex items-center gap-2 sm:gap-3 cursor-pointer group select-none min-w-0"
         >
-          <div className="flex items-center justify-center w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-amber-400/40 via-amber-600/20 to-amber-900/40 p-1 border border-amber-500/40 shadow-gold-glow group-hover:shadow-gold-glow-lg group-hover:border-amber-400 transition-all duration-300">
-            <RavanaImperialLogo size={36} />
+          <div className="flex items-center justify-center w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-gradient-to-br from-amber-400/40 via-amber-600/20 to-amber-900/40 p-0.5 sm:p-1 border border-amber-500/40 shadow-gold-glow group-hover:shadow-gold-glow-lg group-hover:border-amber-400 transition-all duration-300 flex-shrink-0">
+            <RavanaImperialLogo size={26} className="sm:hidden" />
+            <RavanaImperialLogo size={36} className="hidden sm:inline-flex" />
           </div>
-          <div>
-            <div className="flex items-center gap-1.5 flex-wrap">
-              <h1 className="font-serif tracking-widest text-base sm:text-lg lg:text-xl font-bold bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 bg-clip-text text-transparent">
+          <div className="min-w-0">
+            <div className="flex items-center gap-1.5">
+              <h1 className="font-serif tracking-widest text-sm xs:text-base sm:text-lg lg:text-xl font-bold bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 bg-clip-text text-transparent truncate">
                 {t.brandTitle}
               </h1>
-              <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 hidden sm:inline-block">
+              <span className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 hidden md:inline-block">
                 {t.brandTag}
               </span>
-              <span className="text-[10px] tracking-wide px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 inline-flex items-center gap-1 shadow-xs">
+              <span className="text-[10px] tracking-wide px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300 border border-amber-500/30 hidden lg:inline-flex items-center gap-1 shadow-xs">
                 <Sparkles className="w-2.5 h-2.5 text-amber-400 animate-pulse" />
                 <span className="font-serif">
                   {language === 'si' ? 'නිර්මාණය:' : 'by'}{' '}
@@ -78,7 +79,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </span>
               </span>
             </div>
-            <p className="text-[10px] lg:text-xs text-slate-400 tracking-wide font-light hidden sm:block">
+            <p className="text-[10px] lg:text-xs text-slate-400 tracking-wide font-light hidden sm:block truncate">
               {t.brandSubtitle}
             </p>
           </div>
@@ -138,12 +139,12 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Right Action Buttons */}
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
           {/* Mobile View Switcher */}
           <div className="flex md:hidden items-center bg-slate-900/90 p-0.5 rounded-lg border border-amber-500/30">
             <button
               onClick={() => onSwitchView('overview')}
-              className={`px-2 py-1 text-[11px] font-bold rounded transition-all ${
+              className={`px-1.5 xs:px-2 py-0.5 xs:py-1 text-[10px] xs:text-[11px] font-bold rounded transition-all ${
                 currentView === 'overview' ? 'bg-amber-500 text-slate-950' : 'text-slate-400'
               }`}
             >
@@ -151,7 +152,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
             <button
               onClick={() => onSwitchView('map')}
-              className={`px-2 py-1 text-[11px] font-bold rounded transition-all ${
+              className={`px-1.5 xs:px-2 py-0.5 xs:py-1 text-[10px] xs:text-[11px] font-bold rounded transition-all ${
                 currentView === 'map' ? 'bg-amber-500 text-slate-950' : 'text-slate-400'
               }`}
             >
@@ -160,7 +161,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Language Switcher (EN | සිං | हिं) */}
-          <div className="flex items-center bg-slate-900/90 p-0.5 rounded-xl border border-amber-500/30 shadow-inner">
+          <div className="flex items-center bg-slate-900/90 p-0.5 rounded-lg sm:rounded-xl border border-amber-500/30 shadow-inner">
             <div className="hidden xl:flex items-center pl-1.5 pr-1 text-amber-400">
               <Globe className="w-3.5 h-3.5" />
             </div>
@@ -171,7 +172,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   key={item.code}
                   onClick={() => setLanguage(item.code)}
                   title={item.title}
-                  className={`px-2 sm:px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-lg transition-all duration-200 ${
+                  className={`px-1.5 sm:px-2.5 py-0.5 sm:py-1 text-[10px] sm:text-xs font-bold rounded-md sm:rounded-lg transition-all duration-200 ${
                     isSelected
                       ? 'bg-amber-500 text-slate-950 shadow-sm'
                       : 'text-slate-400 hover:text-amber-300 hover:bg-slate-800/50'
@@ -212,11 +213,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           {/* My Trail Drawer Button */}
           <button
             onClick={onOpenTrailDrawer}
-            className="relative flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500/20 via-amber-500/30 to-amber-600/20 border border-amber-500/40 text-amber-300 hover:bg-amber-500/30 hover:border-amber-400 transition-all shadow-sm group"
+            className="relative flex items-center gap-1 sm:gap-2 px-2 sm:px-3.5 py-1.5 rounded-lg sm:rounded-xl bg-gradient-to-r from-amber-500/20 via-amber-500/30 to-amber-600/20 border border-amber-500/40 text-amber-300 hover:bg-amber-500/30 hover:border-amber-400 transition-all shadow-sm group flex-shrink-0"
+            title={t.myTrailBtn}
           >
             <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 group-hover:scale-110 transition-transform" />
-            <span className="text-xs font-semibold tracking-wide whitespace-nowrap">{t.myTrailBtn}</span>
-            <span className="flex items-center justify-center min-w-[18px] sm:min-w-[20px] h-4.5 sm:h-5 px-1 sm:px-1.5 text-[10px] sm:text-[11px] font-bold rounded-full bg-amber-400 text-slate-950 shadow-inner">
+            <span className="text-xs font-semibold tracking-wide whitespace-nowrap hidden sm:inline">{t.myTrailBtn}</span>
+            <span className="flex items-center justify-center min-w-[17px] sm:min-w-[20px] h-4 sm:h-5 px-1 sm:px-1.5 text-[10px] sm:text-[11px] font-bold rounded-full bg-amber-400 text-slate-950 shadow-inner">
               {myTrailCount}
             </span>
           </button>

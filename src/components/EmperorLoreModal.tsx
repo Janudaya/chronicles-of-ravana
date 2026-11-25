@@ -60,24 +60,24 @@ export const EmperorLoreModal: React.FC<EmperorLoreModalProps> = ({
       />
 
       {/* Royal Modal Container */}
-      <div className="relative w-full max-w-4xl max-h-[90vh] bg-gradient-to-b from-slate-900 via-obsidian to-slate-950 border border-amber-500/40 rounded-3xl shadow-2xl shadow-amber-950/50 flex flex-col overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative w-full max-w-4xl max-h-[92vh] sm:max-h-[90vh] bg-gradient-to-b from-slate-900 via-obsidian to-slate-950 border border-amber-500/40 rounded-2xl sm:rounded-3xl shadow-2xl shadow-amber-950/50 flex flex-col overflow-hidden z-10 animate-in fade-in zoom-in-95 duration-200 m-2 sm:m-4">
         {/* Top Glowing Header Strip */}
         <div className="h-1.5 w-full bg-gradient-to-r from-amber-600 via-amber-300 to-amber-600 shadow-gold-glow" />
 
         {/* Header Bar */}
-        <div className="relative px-6 py-5 border-b border-amber-500/20 bg-slate-950/70 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-center text-amber-400 shadow-gold-glow">
-              <Crown className="w-5 h-5" />
+        <div className="relative px-4 sm:px-6 py-3.5 sm:py-5 border-b border-amber-500/20 bg-slate-950/70 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-amber-500/15 border border-amber-500/40 flex items-center justify-center text-amber-400 shadow-gold-glow flex-shrink-0">
+              <Crown className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
-            <div>
+            <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <span className="text-[10px] font-mono tracking-widest text-amber-400 uppercase font-bold px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30">
+                <span className="text-[9px] sm:text-[10px] font-mono tracking-widest text-amber-400 uppercase font-bold px-2 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/30">
                   {language === 'si' ? 'රාජකීය ලේඛනාගාරය' : language === 'hi' ? 'शाही अभिलेखागार' : 'Royal Imperial Archives'}
                 </span>
-                <span className="text-[11px] font-mono text-slate-400">• Pulasti Dynasty</span>
+                <span className="text-[10px] sm:text-[11px] font-mono text-slate-400 hidden xs:inline">• Pulasti Dynasty</span>
               </div>
-              <h2 className="text-xl sm:text-2xl font-serif font-black text-white tracking-wide">
+              <h2 className="text-sm xs:text-base sm:text-xl lg:text-2xl font-serif font-black text-white tracking-wide truncate">
                 {language === 'si'
                   ? 'මහා රාවණාධිරාජයාගේ ඓතිහාසික චරිතාපදානය'
                   : language === 'hi'
@@ -89,10 +89,10 @@ export const EmperorLoreModal: React.FC<EmperorLoreModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors"
+            className="p-1.5 sm:p-2 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition-colors flex-shrink-0"
             aria-label="Close"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
 

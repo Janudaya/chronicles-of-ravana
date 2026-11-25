@@ -310,20 +310,20 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto relative z-30 space-y-16 sm:space-y-20">
+      <div className="max-w-6xl mx-auto relative z-30 space-y-12 sm:space-y-16 lg:space-y-20">
         {/* HERO INTRO SECTION */}
-        <section className="text-center pt-6 sm:pt-10 max-w-4xl mx-auto space-y-6">
+        <section className="text-center pt-4 sm:pt-8 max-w-4xl mx-auto space-y-4 sm:space-y-6">
           {/* Top Tag Badges with Creator Credit */}
-          <div className="flex flex-wrap items-center justify-center gap-2.5">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 shadow-gold-glow">
-              <Crown className="w-4 h-4 text-amber-400" />
-              <span className="text-xs font-serif tracking-widest text-amber-300 font-semibold uppercase">
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 shadow-gold-glow">
+              <Crown className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
+              <span className="text-[10px] sm:text-xs font-serif tracking-widest text-amber-300 font-semibold uppercase">
                 {t.heroLandingTag}
               </span>
             </div>
 
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/95 border border-amber-500/40 text-amber-300 text-xs font-serif shadow-gold-glow">
-              <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+            <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-slate-900/95 border border-amber-500/40 text-amber-300 text-[10px] sm:text-xs font-serif shadow-gold-glow">
+              <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400 animate-pulse" />
               <span>
                 {language === 'si' ? 'සංකල්පය, සැලසුම සහ සංවර්ධනය:' : 'Concept, Design & Developed by'}{' '}
                 <strong className="font-bold text-amber-200 tracking-wide">Janudaya</strong>
@@ -332,38 +332,38 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
           </div>
 
           {/* Main Epic Title */}
-          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight sm:leading-none">
+          <h1 className="font-serif text-2xl xs:text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-snug sm:leading-none break-words px-2">
             <span className="bg-gradient-to-r from-amber-100 via-amber-300 to-amber-600 bg-clip-text text-transparent">
               {t.heroLandingTitle}
             </span>
           </h1>
 
           {/* Subtitle */}
-          <h2 className="text-base sm:text-xl lg:text-2xl font-serif text-amber-400/90 font-medium tracking-wide">
+          <h2 className="text-sm xs:text-base sm:text-xl lg:text-2xl font-serif text-amber-400/90 font-medium tracking-wide px-2">
             {t.heroLandingSubtitle}
           </h2>
 
           {/* Prose Narrative Introduction */}
-          <p className="text-xs sm:text-sm lg:text-base text-slate-300 leading-relaxed font-light max-w-2xl mx-auto">
+          <p className="text-xs sm:text-sm lg:text-base text-slate-300 leading-relaxed font-light max-w-2xl mx-auto px-2">
             {t.heroLandingDesc}
           </p>
 
           {/* Call to Actions (CTAs) */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-4">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 pt-2 sm:pt-4 max-w-sm sm:max-w-none mx-auto w-full">
             <button
               onClick={onBeginExpedition}
-              className="w-full sm:w-auto flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-serif font-black text-sm tracking-wide shadow-gold-glow hover:shadow-gold-glow-lg transition-all duration-300 scale-100 hover:scale-[1.02] group"
+              className="w-full sm:w-auto flex items-center justify-center gap-2.5 px-6 sm:px-8 py-3 sm:py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-serif font-black text-xs sm:text-sm tracking-wide shadow-gold-glow hover:shadow-gold-glow-lg transition-all duration-300 scale-100 hover:scale-[1.02] group"
             >
-              <Compass className="w-5 h-5 group-hover:rotate-45 transition-transform duration-300 text-slate-950" />
+              <Compass className="w-4 h-4 sm:w-5 sm:h-5 group-hover:rotate-45 transition-transform duration-300 text-slate-950" />
               <span>{t.heroBtnBegin}</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
             </button>
 
             <button
               onClick={onBeginExpedition}
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 hover:border-amber-500/50 text-slate-200 font-semibold text-sm transition-all shadow-md"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-5 sm:px-6 py-3 sm:py-3.5 rounded-2xl bg-slate-900/80 hover:bg-slate-800 border border-slate-700/80 hover:border-amber-500/50 text-slate-200 font-semibold text-xs sm:text-sm transition-all shadow-md"
             >
-              <Sparkles className="w-4 h-4 text-amber-400" />
+              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
               <span>{t.heroBtnDirectMap}</span>
             </button>
           </div>
@@ -471,20 +471,20 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
         </section>
 
         {/* CHAPTER 03 CINEMATIC SHOWCASE: THE GREAT CONFLICT (POINTER & TOUCH SCRUBBED) */}
-        <section className="relative my-8 sm:my-12 rounded-3xl overflow-hidden border border-amber-500/30 bg-slate-950/80 shadow-2xl min-h-[460px] sm:min-h-[520px] flex flex-col justify-between p-6 sm:p-10 group">
+        <section className="relative my-6 sm:my-10 rounded-2xl sm:rounded-3xl overflow-hidden border border-amber-500/30 bg-slate-950/80 shadow-2xl min-h-[380px] xs:min-h-[440px] sm:min-h-[520px] flex flex-col justify-between p-4 sm:p-8 lg:p-10 group">
           {/* Mouse-Pointer & Mobile Scroll/Touch Scrubbed Video UNDERNEATH this content */}
           <div className="absolute inset-0 z-0 overflow-hidden">
             <MousePointerBattleVideo className="w-full h-full" />
           </div>
 
           {/* Foreground Content (100% accessible and readable) */}
-          <div className="relative z-10 space-y-4 max-w-xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-mono">
+          <div className="relative z-10 space-y-3 sm:space-y-4 max-w-xl">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-[11px] sm:text-xs font-mono">
               <Zap className="w-3.5 h-3.5 text-amber-400" />
               <span>CHAPTER 03 • THE GREAT CONFLICT</span>
             </div>
 
-            <h2 className="font-serif text-2xl sm:text-4xl font-black text-white leading-tight drop-shadow-md">
+            <h2 className="font-serif text-xl xs:text-2xl sm:text-4xl font-black text-white leading-tight drop-shadow-md">
               {language === 'si'
                 ? 'මහා රාවණ රජුගේ සූර්ය අස්ත්‍ර ප්‍රහාරය'
                 : language === 'hi'
@@ -495,7 +495,7 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
             <div className="pt-2 flex flex-wrap items-center gap-3">
               <button
                 onClick={() => onSelectChapterAndExplore('The Great Conflict')}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-serif font-bold text-xs sm:text-sm shadow-gold-glow transition-all scale-100 hover:scale-[1.02]"
+                className="flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-serif font-bold text-xs sm:text-sm shadow-gold-glow transition-all scale-100 hover:scale-[1.02] w-full sm:w-auto"
               >
                 <span>{language === 'si' ? 'Chapter 03 සිතියමෙන් ගවේෂණය කරන්න' : 'Explore Chapter 03 Sites'}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -535,9 +535,9 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
         </section>
 
         {/* BOTTOM CALL TO ACTION BANNER */}
-        <section className="relative rounded-3xl p-6 sm:p-10 border border-amber-500/30 bg-gradient-to-r from-amber-950/40 via-slate-900/90 to-slate-950 overflow-hidden shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="space-y-2 max-w-xl text-center sm:text-left">
-            <h3 className="font-serif text-xl sm:text-2xl font-bold text-slate-100">
+        <section className="relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 lg:p-10 border border-amber-500/30 bg-gradient-to-r from-amber-950/40 via-slate-900/90 to-slate-950 overflow-hidden shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-6 text-center sm:text-left">
+          <div className="space-y-2 max-w-xl">
+            <h3 className="font-serif text-lg sm:text-2xl font-bold text-slate-100">
               Ready to Embark on the Sacred Odyssey?
             </h3>
             <p className="text-xs sm:text-sm text-slate-300 font-light">
@@ -550,7 +550,7 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
               playVimanaWhoosh();
               onBeginExpedition();
             }}
-            className="flex-shrink-0 flex items-center gap-2 px-7 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-serif font-black text-xs sm:text-sm shadow-gold-glow transition-all hover:scale-105"
+            className="w-full sm:w-auto flex-shrink-0 flex items-center justify-center gap-2 px-6 sm:px-7 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-serif font-black text-xs sm:text-sm shadow-gold-glow transition-all hover:scale-105"
           >
             <Compass className="w-4 h-4" />
             <span>Launch Interactive Map</span>
@@ -566,7 +566,7 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
             <h4 className="font-serif text-xl sm:text-2xl font-bold bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 bg-clip-text text-transparent">
               CHRONICLES OF RAVANA • රාවණ වංශය
             </h4>
-            <p className="text-xs sm:text-sm text-slate-400 max-w-lg font-light mx-auto leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-400 max-w-lg font-light mx-auto leading-relaxed px-2">
               {language === 'si'
                 ? 'හෙළයේ අභිමානවත් මහා රාවණ අධිරාජ්‍යයේ නොදුටු ඉතිහාසය හා ඓතිහාසික ස්ථාන ගවේෂණය.'
                 : 'A cinematic digital expedition into the celestial empire and sacred cartography of Emperor Ravana.'}
@@ -574,14 +574,14 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
           </div>
 
           {/* Creator & Contact Row */}
-          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 max-w-4xl mx-auto">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 max-w-2xl mx-auto w-full px-2">
             {/* Creator Royal Badge */}
-            <div className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-slate-900/90 border border-amber-500/40 shadow-gold-glow backdrop-blur-md">
+            <div className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-slate-900/90 border border-amber-500/40 shadow-gold-glow backdrop-blur-md">
               <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
               <span className="text-xs sm:text-sm text-slate-300 font-serif font-medium">
                 Concept, Design & Developed by:
               </span>
-              <span className="px-3.5 py-1 rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 text-slate-950 font-serif font-black text-xs sm:text-sm tracking-wider shadow-md">
+              <span className="px-3 py-0.5 sm:px-3.5 sm:py-1 rounded-full bg-gradient-to-r from-amber-500 via-amber-400 to-amber-600 text-slate-950 font-serif font-black text-xs sm:text-sm tracking-wider shadow-md">
                 JANUDAYA
               </span>
             </div>
@@ -589,14 +589,14 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
             {/* Direct Email Contact Pill */}
             <a
               href="mailto:janudayakavinda@gmail.com?subject=Inquiry%20-%20Chronicles%20of%20Ravana%20Project"
-              className="group inline-flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-gradient-to-r from-amber-950/60 to-slate-900/90 border border-amber-500/40 hover:border-amber-400 text-amber-300 hover:text-amber-200 transition-all duration-300 shadow-md hover:shadow-gold-glow hover:scale-[1.02]"
+              className="group inline-flex items-center justify-center gap-2.5 px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-gradient-to-r from-amber-950/60 to-slate-900/90 border border-amber-500/40 hover:border-amber-400 text-amber-300 hover:text-amber-200 transition-all duration-300 shadow-md hover:shadow-gold-glow hover:scale-[1.02]"
               title="Send an email to Janudaya"
             >
-              <div className="w-7 h-7 rounded-lg bg-amber-500/20 flex items-center justify-center group-hover:bg-amber-500/30 transition-colors">
-                <Mail className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
+              <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-amber-500/20 flex items-center justify-center group-hover:bg-amber-500/30 transition-colors flex-shrink-0">
+                <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 group-hover:scale-110 transition-transform" />
               </div>
               <div className="text-left">
-                <div className="text-[10px] text-slate-400 font-mono uppercase tracking-wider">
+                <div className="text-[9px] sm:text-[10px] text-slate-400 font-mono uppercase tracking-wider">
                   {language === 'si' ? 'සම්බන්ධ කරගන්න • Get in Touch' : 'Get in Touch'}
                 </div>
                 <div className="text-xs sm:text-sm font-semibold text-slate-200 group-hover:text-amber-300 font-mono tracking-tight">
@@ -606,7 +606,7 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
             </a>
           </div>
 
-          <div className="pt-2 text-[11px] text-slate-500 font-mono flex flex-wrap items-center justify-center gap-3">
+          <div className="pt-2 text-[11px] text-slate-500 font-mono flex flex-wrap items-center justify-center gap-2 sm:gap-3 px-2">
             <span>© 2026 Chronicles of Ravana</span>
             <span>•</span>
             <span className="text-amber-400/90 font-medium">Concept, Design & Developed by Janudaya</span>

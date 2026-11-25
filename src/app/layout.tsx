@@ -1,7 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { AudioAtmosphereProvider } from "@/context/AudioAtmosphereContext";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#0B0F19",
+};
 
 export const metadata: Metadata = {
   title: "RAVANA TRAIL — The Chronicle of Lanka",

@@ -115,7 +115,7 @@ export const AmbientSoundController: React.FC = () => {
 
       {/* Floating Soundscape Settings Dropdown */}
       {isOpen && (
-        <div className="absolute right-0 top-full mt-2 w-72 sm:w-80 rounded-2xl bg-slate-950/95 border border-amber-500/40 p-4 shadow-2xl backdrop-blur-xl z-50 space-y-4 animate-in fade-in zoom-in-95 duration-150">
+        <div className="absolute right-0 top-full mt-2 w-72 sm:w-80 max-w-[calc(100vw-24px)] rounded-2xl bg-slate-950/95 border border-amber-500/40 p-3.5 sm:p-4 shadow-2xl backdrop-blur-xl z-50 space-y-3.5 sm:space-y-4 animate-in fade-in zoom-in-95 duration-150">
           {/* Header */}
           <div className="flex items-center justify-between border-b border-slate-800 pb-2.5">
             <div className="flex items-center gap-2">

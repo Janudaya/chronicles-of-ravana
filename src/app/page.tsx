@@ -213,13 +213,13 @@ export default function RavanaTrailApp() {
       {/* VIEW 2: INTERACTIVE SPLIT-SCREEN SCROLLYTELLING & MAP */}
       {currentView === 'map' && (
         <>
-          <main className="w-full h-full flex flex-col lg:flex-row overflow-hidden relative pt-14 md:pt-16">
-            {/* Story Panel: Left 40% on Desktop; Bottom 55vh on Mobile */}
+          <main className="w-full h-full flex flex-col lg:flex-row overflow-hidden relative pt-[84px] md:pt-16">
+            {/* Story Panel: Left 40% on Desktop; Bottom/Top on Mobile */}
             <div
               className={`w-full lg:w-[42%] xl:w-[38%] h-full z-10 transition-all duration-300 ${
                 isMobileMapExpanded
-                  ? 'h-[25vh] lg:h-full'
-                  : 'h-[55vh] lg:h-full'
+                  ? 'h-[26vh] lg:h-full'
+                  : 'h-[52vh] lg:h-full'
               }`}
             >
               <StoryPanel
@@ -235,12 +235,12 @@ export default function RavanaTrailApp() {
               />
             </div>
 
-            {/* Interactive Map: Right 60% on Desktop; Top 45vh on Mobile */}
+            {/* Interactive Map: Right 60% on Desktop */}
             <div
               className={`w-full lg:w-[58%] xl:w-[62%] h-full relative z-0 transition-all duration-300 ${
                 isMobileMapExpanded
-                  ? 'h-[75vh] lg:h-full'
-                  : 'h-[45vh] lg:h-full'
+                  ? 'h-[74vh] lg:h-full'
+                  : 'h-[48vh] lg:h-full'
               }`}
             >
               <MapWrapper
@@ -258,11 +258,11 @@ export default function RavanaTrailApp() {
                 onResetView={handleResetView}
               />
 
-              {/* Mobile Height Toggle Pill (Offset below the top-right map style toggle) */}
-              <div className="lg:hidden absolute top-16 right-3 z-20 pointer-events-auto">
+              {/* Mobile Height Toggle Pill (Offset cleanly on mobile map) */}
+              <div className="lg:hidden absolute top-14 right-3 z-20 pointer-events-auto">
                 <button
                   onClick={() => setIsMobileMapExpanded((prev) => !prev)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-900/90 border border-amber-500/40 text-amber-300 text-xs font-semibold shadow-lg backdrop-blur-md"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-950/90 border border-amber-500/40 text-amber-300 text-[11px] font-semibold shadow-lg backdrop-blur-md"
                 >
                   {isMobileMapExpanded ? (
                     <>

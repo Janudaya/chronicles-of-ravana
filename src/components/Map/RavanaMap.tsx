@@ -605,10 +605,10 @@ export const RavanaMap: React.FC<RavanaMapProps> = ({
       </MapContainer>
 
       {/* Floating 'Show Vimana Flight Network' Toggle Switch (Top-Left of Map) */}
-      <div className="absolute top-4 left-4 z-10 pointer-events-auto">
+      <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-10 pointer-events-auto">
         <div
           onClick={toggleVimana}
-          className={`flex items-center gap-3 px-3.5 py-2 rounded-xl backdrop-blur-xl border transition-all cursor-pointer shadow-xl ${
+          className={`flex items-center gap-2 sm:gap-3 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl backdrop-blur-xl border transition-all cursor-pointer shadow-xl ${
             showVimana
               ? 'bg-slate-950/95 border-cyan-400/60 shadow-[0_0_25px_rgba(6,182,212,0.35)]'
               : 'bg-slate-950/85 border-slate-800 hover:border-slate-700'
@@ -616,14 +616,14 @@ export const RavanaMap: React.FC<RavanaMapProps> = ({
         >
           {/* Plane Icon */}
           <div
-            className={`w-7 h-7 rounded-lg flex items-center justify-center transition-all ${
+            className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center transition-all ${
               showVimana
                 ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
                 : 'bg-slate-900 text-slate-400 border border-slate-800'
             }`}
           >
             <Plane
-              className={`w-4 h-4 transition-transform duration-300 ${
+              className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 ${
                 showVimana ? 'rotate-45 text-cyan-400 scale-110' : ''
               }`}
             />
@@ -633,7 +633,7 @@ export const RavanaMap: React.FC<RavanaMapProps> = ({
           <div className="flex flex-col">
             <div className="flex items-center gap-1.5">
               <span
-                className={`text-xs font-bold tracking-wide transition-colors ${
+                className={`text-[11px] sm:text-xs font-bold tracking-wide transition-colors ${
                   showVimana ? 'text-cyan-300' : 'text-slate-300'
                 }`}
               >
@@ -650,13 +650,13 @@ export const RavanaMap: React.FC<RavanaMapProps> = ({
 
           {/* Toggle Switch */}
           <div
-            className={`relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
+            className={`relative inline-flex h-4 sm:h-5 w-7 sm:w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out ${
               showVimana ? 'bg-cyan-500 shadow-[0_0_12px_#06B6D4]' : 'bg-slate-800'
             }`}
           >
             <span
-              className={`pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${
-                showVimana ? 'translate-x-4' : 'translate-x-0 bg-slate-400'
+              className={`pointer-events-none inline-block h-3 sm:h-4 w-3 sm:w-4 transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out ${
+                showVimana ? 'translate-x-3 sm:translate-x-4' : 'translate-x-0 bg-slate-400'
               }`}
             />
           </div>
@@ -664,11 +664,11 @@ export const RavanaMap: React.FC<RavanaMapProps> = ({
       </div>
 
       {/* Floating Map Style Switcher (Top-Right of Map) */}
-      <div className="absolute top-4 right-4 z-10 pointer-events-auto">
-        <div className="flex items-center bg-slate-950/90 p-1 rounded-xl border border-amber-500/30 shadow-xl backdrop-blur-md">
+      <div className="absolute top-3 right-3 sm:top-4 sm:right-4 z-10 pointer-events-auto">
+        <div className="flex items-center bg-slate-950/90 p-0.5 sm:p-1 rounded-xl border border-amber-500/30 shadow-xl backdrop-blur-md">
           <button
             onClick={() => setMapStyle('dark')}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-semibold transition-all ${
               mapStyle === 'dark'
                 ? 'bg-amber-500 text-slate-950 shadow-sm'
                 : 'text-slate-400 hover:text-amber-300'
@@ -681,7 +681,7 @@ export const RavanaMap: React.FC<RavanaMapProps> = ({
 
           <button
             onClick={() => setMapStyle('satellite')}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
+            className={`flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-lg text-[11px] sm:text-xs font-semibold transition-all ${
               mapStyle === 'satellite'
                 ? 'bg-amber-500 text-slate-950 shadow-sm'
                 : 'text-slate-400 hover:text-amber-300'
@@ -729,10 +729,10 @@ export const RavanaMap: React.FC<RavanaMapProps> = ({
       </div>
 
       {/* Floating Compass / Reset Button (Bottom-Right) */}
-      <div className="absolute bottom-6 right-6 z-10 pointer-events-auto">
+      <div className="absolute bottom-20 right-3 sm:bottom-6 sm:right-6 z-10 pointer-events-auto">
         <button
           onClick={onResetView}
-          className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-950/90 hover:bg-slate-900 border border-amber-500/30 text-amber-300 hover:text-amber-200 text-xs font-semibold shadow-2xl backdrop-blur-md transition-all group"
+          className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-slate-950/90 hover:bg-slate-900 border border-amber-500/30 text-amber-300 hover:text-amber-200 text-xs font-semibold shadow-2xl backdrop-blur-md transition-all group"
           title={t.fitSriLanka}
         >
           <Compass className="w-4 h-4 text-amber-400 group-hover:rotate-45 transition-transform duration-300" />
